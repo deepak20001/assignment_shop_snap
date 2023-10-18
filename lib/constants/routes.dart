@@ -11,7 +11,7 @@ class Routes {
   Future<dynamic> push(
       {required Widget widget, required BuildContext context}) {
     return Navigator.of(context).push(
-      MaterialPageRoute(builder: (ctx) => widget),
+      MaterialPageRoute(builder: (_) => widget),
     );
   }
 

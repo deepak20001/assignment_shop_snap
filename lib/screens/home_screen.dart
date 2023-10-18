@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_snap/provider/product_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,8 +12,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
 
+  void addProducts() async {
+    final productProvider = context.read<ProductProvider>();
+    await productProvider.fetchAllProducts();
+  }
+
+  @override
+  void initState() {
+    addProducts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final productProvider = context.watch<ProductProvider>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -24,11 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
@@ -77,13 +91,123 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-            ),
-            const SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: BouncingScrollPhysics(),
-              child: Row(),
-            ),
-          ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Container(),
+              ),
+              Column(
+                children: [
+                  SingleChildScrollView(
+                    child: productProvider.isLoading == true
+                        ? const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : productProvider.productModelList.isEmpty == true
+                            ? const Center(
+                                child: Text("Products are empty!"),
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Products",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  GridView.builder(
+                                      shrinkWrap: true,
+                                      primary: false,
+                                      itemCount: productProvider
+                                          .productModelList.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 20,
+                                        childAspectRatio: 0.62,
+                                        crossAxisCount: 2,
+                                      ),
+                                      itemBuilder: (ctx, index) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blueGrey.shade100,
+                                            border: Border.all(
+                                              color: Colors.blueGrey.shade900,
+                                              width: 1.5,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12.0),
+                                                child: Image.network(
+                                                  productProvider
+                                                      .productModelList[index]
+                                                      .category!
+                                                      .image
+                                                      .toString(),
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 12.0),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 6.0,
+                                                ),
+                                                child: Text(
+                                                  productProvider
+                                                      .productModelList[index]
+                                                      .title
+                                                      .toString(),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                "Price: ₹${productProvider.productModelList[index].price}",
+                                              ),
+                                              const SizedBox(height: 6.0),
+                                              SizedBox(
+                                                height: 45.0,
+                                                width: 140.0,
+                                                child: OutlinedButton(
+                                                  onPressed: () {},
+                                                  child: const Text(
+                                                    "Buy",
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                ],
+                              ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
