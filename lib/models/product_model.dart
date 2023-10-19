@@ -20,8 +20,8 @@ class ProductModel {
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title'];
-    price = json['price'];
+    title = json['title'] ?? "--";
+    price = json['price'] ?? "";
     description = json['description'];
     images = json['images'].cast<String>();
     creationAt = json['creationAt'];

@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_snap/provider/product_provider.dart';
+import 'package:shop_snap/screens/product_detail_screen.dart';
+
+import '../constants/routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -134,20 +137,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: Column(
                                           children: [
                                             Image.network(
-                                                productProvider
-                                                    .categoryModelList[index]
-                                                    .image!,
-                                                height: 180, errorBuilder:
-                                                    (BuildContext context,
-                                                        Object exception,
-                                                        StackTrace?
-                                                            stackTrace) {
-                                              return Image.network(
-                                                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
-                                                fit: BoxFit.cover,
-                                                height: 180,
-                                              );
-                                            }),
+                                              productProvider
+                                                  .categoryModelList[index]
+                                                  .image!,
+                                              height: 180,
+                                              errorBuilder:
+                                                  (BuildContext context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
+                                                return Image.network(
+                                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
+                                                  fit: BoxFit.cover,
+                                                  height: 180,
+                                                );
+                                              },
+                                            ),
                                             const SizedBox(height: 5),
                                             Text(
                                               productProvider
@@ -225,6 +229,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .image
                                                     .toString(),
                                                 fit: BoxFit.contain,
+                                                errorBuilder: (BuildContext
+                                                        context,
+                                                    Object exception,
+                                                    StackTrace? stackTrace) {
+                                                  return Image.network(
+                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
+                                                    fit: BoxFit.cover,
+                                                    height: 180,
+                                                  );
+                                                },
                                               ),
                                             ),
                                             const SizedBox(height: 12.0),
@@ -255,7 +269,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 45.0,
                                               width: 140.0,
                                               child: OutlinedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Routes.instance.push(
+                                                      widget:
+                                                          ProductDetailScreen(
+                                                        productDetail:
+                                                            productProvider
+                                                                    .productModelList[
+                                                                index],
+                                                      ),
+                                                      context: context);
+                                                },
                                                 child: const Text(
                                                   "Buy",
                                                 ),
