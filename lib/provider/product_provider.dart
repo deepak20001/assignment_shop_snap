@@ -10,9 +10,8 @@ class ProductProvider with ChangeNotifier {
   CategoryModel? categoryModel;
   List<ProductModel> productModelList = [];
   List<CategoryModel> categoryModelList = [];
+  List<ProductModel> searchTitleList = [];
   bool isLoading = true;
-  Map<String, List<ProductModel>> categoryModelMap =
-      <String, List<ProductModel>>{};
 
   final String url = "https://api.escuelajs.co/api/v1/";
 
@@ -62,6 +61,34 @@ class ProductProvider with ChangeNotifier {
       }
     } catch (e) {
       // print(e.toString());
+      showMessage(e.toString(), Colors.red);
+      notifyListeners();
+    }
+  }
+
+  Future<void> filterProductsByTitle(String text) async {
+    try {
+      const String titleEndPoint = "products";
+      final res = await http.get(Uri.parse(url + titleEndPoint));
+
+      if (res.statusCode == 200) {
+        List<dynamic> data = jsonDecode(res.body);
+        for (Map<String, dynamic> val in data) {
+          productmodel = ProductModel.fromJson(val);
+          if (productmodel!.title!
+              .toLowerCase()
+              .startsWith(text.toLowerCase())) {
+            searchTitleList.add(productmodel!);
+          }
+          print(searchTitleList.toString());
+        }
+
+        notifyListeners();
+      } else {
+        showMessage("Couldn't able to fetch products!!", Colors.red);
+        notifyListeners();
+      }
+    } catch (e) {
       showMessage(e.toString(), Colors.red);
       notifyListeners();
     }
