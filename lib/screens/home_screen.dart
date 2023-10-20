@@ -50,8 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Routes.instance
-                  .push(widget: const FavouriteScreen(), context: context);
+              Routes.instance.push(widget: const FavouriteScreen(), context: context);
             },
             icon: Icon(
               Icons.favorite,

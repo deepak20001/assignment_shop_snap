@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_snap/constants/constants.dart';
 import 'package:shop_snap/provider/favourite_provider.dart';
 import 'package:shop_snap/screens/favourite_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -71,7 +72,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    print(activeIndex);
+                    // print(activeIndex);
                   },
                   child: CarouselSlider(
                     items: widget.productDetail!.images!
@@ -128,6 +129,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 IconButton(
                   onPressed: () {
+                    if (favouriteProvider.isFavourite(widget.productDetail!) ==
+                        false) {
+                      showMessage("Added to favourites", Colors.green);
+                    } else {
+                      showMessage("Removed from favourites", Colors.red);
+                    }
                     favouriteProvider.toggleFavourite(widget.productDetail!);
                   },
                   icon: Icon(

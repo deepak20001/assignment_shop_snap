@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_snap/constants/constants.dart';
 import '../provider/favourite_provider.dart';
 import 'widgets/single_favourite_item.dart';
 
@@ -24,6 +25,11 @@ class FavouriteScreen extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: FloatingActionButton.extended(
           onPressed: () {
+            if (favouriteProvider.favouriteList!.isEmpty) {
+              showMessage("Favourite screen is Empty", Colors.red);
+            } else {
+              showMessage("Removed all products", Colors.red);
+            }
             favouriteProvider.clearFavourite();
           },
           label: const Text(
