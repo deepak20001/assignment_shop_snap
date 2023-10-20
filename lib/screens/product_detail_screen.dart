@@ -22,18 +22,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final CarouselController carouselController = CarouselController();
   int activeIndex = 0;
 
-  // void slidingImages() {
-  //   for (var element in widget.productDetail!.images!) {
-  //     imageList.add(element);
-  //   }
-  // }
-
-  // @override
-  // void initState() {
-  //   slidingImages();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
@@ -51,27 +39,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
-            // Text(widget.productDetail!.images!.length.toString()),
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(10),
-            //   child: SizedBox(
-            //     height: 300,
-            //     width: 300,
-            //     child:
-            //     Image.network(
-            //       widget.productDetail!.images![0].toString(),
-            //       height: 180,
-            //       errorBuilder: (BuildContext context, Object exception,
-            //           StackTrace? stackTrace) {
-            //         return Image.network(
-            //           "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
-            //           fit: BoxFit.cover,
-            //           height: 180,
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
             Stack(
               children: [
                 InkWell(
