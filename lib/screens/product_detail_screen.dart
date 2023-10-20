@@ -2,7 +2,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_snap/provider/favourite_provider.dart';
+import 'package:shop_snap/screens/favourite_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../constants/routes.dart';
 import '../main.dart';
 import '../models/product_model.dart';
 
@@ -25,6 +29,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
+    final favouriteProvider = context.watch<FavouriteProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,9 +40,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
         ],
       ),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomCenter,
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Routes.instance.push(
+              widget: const FavouriteScreen(),
+              context: context,
+            );
+          },
+          label: const Text(
+            'Go to Favourites',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          icon: const Icon(
+            Icons.favorite,
+            color: Colors.white,
+          ),
+          backgroundColor: Colors.blueGrey,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
@@ -99,12 +127,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite,
+                  onPressed: () {
+                    favouriteProvider.toggleFavourite(widget.productDetail!);
+                  },
+                  icon: Icon(
+                    favouriteProvider.isFavourite(widget.productDetail!) == true
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: Colors.red.shade200,
                   ),
                 ),
               ],
+            ),
+            Text(
+              "₹${widget.productDetail!.price.toString()}",
+              style: TextStyle(
+                fontSize: 18,
+                fontStyle: FontStyle.italic,
+                color: Colors.blueGrey.shade400,
+              ),
             ),
             Text(
               widget.productDetail!.description.toString(),
@@ -155,30 +196,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
               ],
-            ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: const Text("ADD TO CART"),
-                  ),
-                  const SizedBox(
-                    width: 24.0,
-                  ),
-                  SizedBox(
-                    height: 38,
-                    width: 140,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text("BUY"),
-                    ),
-                  ),
-                ],
-              ),
             ),
             const SizedBox(height: 20),
           ],

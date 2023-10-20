@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_snap/provider/product_provider.dart';
 import 'package:shop_snap/screens/category_view_screen.dart';
+import 'package:shop_snap/screens/favourite_screen.dart';
 import 'package:shop_snap/screens/product_detail_screen.dart';
 import '../constants/routes.dart';
 
@@ -46,6 +47,18 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Routes.instance
+                  .push(widget: const FavouriteScreen(), context: context);
+            },
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.red.shade200,
+            ),
+          ),
+        ],
       ),
       body: productProvider.isLoading
           ? Center(
