@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_snap/provider/product_provider.dart';
+import 'package:shop_snap/screens/category_view_screen.dart';
 import 'package:shop_snap/screens/product_detail_screen.dart';
 import '../constants/routes.dart';
 
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final productProvider = context.watch<ProductProvider>();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -133,7 +135,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     productProvider.categoryModelList.length,
                                 itemBuilder: (context, index) {
                                   return CupertinoButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Routes.instance.push(
+                                          widget: CategoryViewScreen(
+                                            id: productProvider
+                                                .categoryModelList[index].id!,
+                                            name: productProvider
+                                                .categoryModelList[index].name
+                                                .toString(),
+                                          ),
+                                          context: context);
+                                    },
                                     child: Card(
                                       color: Colors.blueGrey.shade100,
                                       child: Padding(
@@ -151,11 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         context,
                                                     Object exception,
                                                     StackTrace? stackTrace) {
-                                                  return Image.network(
-                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
-                                                    width: 300,
-                                                    height: 150,
-                                                    fit: BoxFit.contain,
+                                                  return const Padding(
+                                                    padding: EdgeInsets.all(33),
+                                                    child: Center(
+                                                      child: Text(
+                                                          "No image found!"),
+                                                    ),
                                                   );
                                                 },
                                               ),

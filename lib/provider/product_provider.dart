@@ -11,11 +11,15 @@ class ProductProvider with ChangeNotifier {
   List<ProductModel> productModelList = [];
   List<CategoryModel> categoryModelList = [];
   List<ProductModel> searchTitleList = [];
+  List<ProductModel> categoryProductsList = [];
   bool isLoading = true;
+  bool isLoadingCategory = true;
 
   final String url = "https://api.escuelajs.co/api/v1/";
 
   Future<void> fetchAllProducts() async {
+    productModelList = [];
+
     try {
       const String productsEndPoint = "products";
       final res = await http.get(Uri.parse(url + productsEndPoint));
@@ -40,6 +44,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> fetchAllCategories() async {
+    categoryModelList = [];
     try {
       const String categoriesEndPoint = "categories";
       final res = await http.get(Uri.parse(url + categoriesEndPoint));
@@ -67,6 +72,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> filterProductsByTitle(String text) async {
+    searchTitleList = [];
     try {
       const String titleEndPoint = "products";
       final res = await http.get(Uri.parse(url + titleEndPoint));
@@ -80,7 +86,7 @@ class ProductProvider with ChangeNotifier {
               .startsWith(text.toLowerCase())) {
             searchTitleList.add(productmodel!);
           }
-          print(searchTitleList.toString());
+          // print(searchTitleList.toString());
         }
 
         notifyListeners();
@@ -92,6 +98,34 @@ class ProductProvider with ChangeNotifier {
       showMessage(e.toString(), Colors.red);
       notifyListeners();
     }
+  }
+
+  Future<void> filterProductsByCategory(int id) async {
+    isLoadingCategory = true;
+    categoryProductsList = [];
+
+    try {
+      final String categoryEndPoint = "products?categoryId=$id";
+      final res = await http.get(Uri.parse(url + categoryEndPoint));
+
+      if (res.statusCode == 200) {
+        List<dynamic> data = jsonDecode(res.body);
+        for (Map<String, dynamic> val in data) {
+          productmodel = ProductModel.fromJson(val);
+          categoryProductsList.add(productmodel!);
+        }
+
+        notifyListeners();
+      } else {
+        showMessage("Couldn't able to fetch products!!", Colors.red);
+        notifyListeners();
+      }
+    } catch (e) {
+      showMessage(e.toString(), Colors.red);
+      notifyListeners();
+    }
+
+    isLoadingCategory = false;
   }
 
   Future<void> fetch() async {
