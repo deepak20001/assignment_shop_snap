@@ -1,16 +1,17 @@
-# shop_snap
+# "Shap-snap"
+Created a Flutter shopping app with advanced functionalities, including a robust search system and the ability to add favorites. Leveraging Multiproviders for effective state management, the app offers a seamless user experience. It's powered by the Platzi Fake Store API, ensuring a wide range of products and real-time data for users, all wrapped in a sleek and user-friendly UI.
+<br>
 
-A new Flutter project.
+<p float="left">
+  <img src="https://github.com/deepak20001/assignment_shop_snap/assets/88405430/c1332828-57c7-4368-84f8-1b68ee713631"  width="200">  
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/deepak20001/assignment_shop_snap/assets/88405430/5f04a8c0-7126-41f1-83d4-c7e115104e28"  width="200">
+  &nbsp;&nbsp;&nbsp;&nbsp;  
+  <img src="https://github.com/deepak20001/assignment_shop_snap/assets/88405430/23fa8f1a-512e-4e09-9ae8-0378fa78b352"  width="200">
+  &nbsp;&nbsp;&nbsp;&nbsp;  
+  <img src="https://github.com/deepak20001/assignment_shop_snap/assets/88405430/80512a8a-510a-4ab7-adae-16bea74f4f56"  width="200">
+  &nbsp;&nbsp;&nbsp;&nbsp; 
+</p>
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Contributing
+Contributions are always welcome!
