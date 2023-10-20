@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../main.dart';
 import '../models/product_model.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -16,9 +19,25 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int qty = 0;
+  final CarouselController carouselController = CarouselController();
+  int activeIndex = 0;
+
+  // void slidingImages() {
+  //   for (var element in widget.productDetail!.images!) {
+  //     imageList.add(element);
+  //   }
+  // }
+
+  // @override
+  // void initState() {
+  //   slidingImages();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -32,24 +51,71 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: SizedBox(
-                height: 300,
-                width: 300,
-                child: Image.network(
-                  widget.productDetail!.images![0].toString(),
-                  height: 180,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Image.network(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
-                      fit: BoxFit.cover,
-                      height: 180,
-                    );
+            // Text(widget.productDetail!.images!.length.toString()),
+            // ClipRRect(
+            //   borderRadius: BorderRadius.circular(10),
+            //   child: SizedBox(
+            //     height: 300,
+            //     width: 300,
+            //     child:
+            //     Image.network(
+            //       widget.productDetail!.images![0].toString(),
+            //       height: 180,
+            //       errorBuilder: (BuildContext context, Object exception,
+            //           StackTrace? stackTrace) {
+            //         return Image.network(
+            //           "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
+            //           fit: BoxFit.cover,
+            //           height: 180,
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            Stack(
+              children: [
+                InkWell(
+                  onTap: () {
+                    print(activeIndex);
                   },
+                  child: CarouselSlider(
+                    items: widget.productDetail!.images!
+                        .map(
+                          (i) => Builder(
+                            builder: (BuildContext context) {
+                              return Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Image.network(
+                                  i,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                        .toList(),
+                    carouselController: carouselController,
+                    options: CarouselOptions(
+                        scrollPhysics: const BouncingScrollPhysics(),
+                        autoPlay: true,
+                        aspectRatio: 1,
+                        viewportFraction: 0.89,
+                        enlargeCenterPage: true,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            activeIndex = index;
+                          });
+                        }),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: mq.height * .02,
+                  left: mq.width * .4,
+                  child: buildIndicator(),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,4 +219,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
     );
   }
+
+  Widget buildIndicator() => AnimatedSmoothIndicator(
+        activeIndex: activeIndex,
+        count: widget.productDetail!.images!.length,
+        effect: const SlideEffect(
+          strokeWidth: 1.5,
+          dotColor: Colors.white,
+          activeDotColor: Colors.black,
+          paintStyle: PaintingStyle.fill,
+        ),
+      );
 }

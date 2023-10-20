@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_snap/provider/product_provider.dart';
 import 'package:shop_snap/screens/product_detail_screen.dart';
-
 import '../constants/routes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -136,21 +135,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding: const EdgeInsets.all(10.0),
                                         child: Column(
                                           children: [
-                                            Image.network(
-                                              productProvider
-                                                  .categoryModelList[index]
-                                                  .image!,
+                                            SizedBox(
                                               height: 180,
-                                              errorBuilder:
-                                                  (BuildContext context,
-                                                      Object exception,
-                                                      StackTrace? stackTrace) {
-                                                return Image.network(
-                                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
-                                                  fit: BoxFit.cover,
-                                                  height: 180,
-                                                );
-                                              },
+                                              child: Image.network(
+                                                productProvider
+                                                    .categoryModelList[index]
+                                                    .image!,
+                                                fit: BoxFit.contain,
+                                                errorBuilder: (BuildContext
+                                                        context,
+                                                    Object exception,
+                                                    StackTrace? stackTrace) {
+                                                  return Image.network(
+                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
+                                                    width: 300,
+                                                    height: 150,
+                                                    fit: BoxFit.contain,
+                                                  );
+                                                },
+                                              ),
                                             ),
                                             const SizedBox(height: 5),
                                             Text(
@@ -199,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                       mainAxisSpacing: 14,
                                       crossAxisSpacing: 14,
-                                      childAspectRatio: 0.62,
+                                      childAspectRatio: 0.55,
                                       crossAxisCount: 2,
                                     ),
                                     itemBuilder: (ctx, index) {
@@ -222,23 +225,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                               padding:
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 12.0),
-                                              child: Image.network(
-                                                productProvider
-                                                    .productModelList[index]
-                                                    .category!
-                                                    .image
-                                                    .toString(),
-                                                fit: BoxFit.contain,
-                                                errorBuilder: (BuildContext
-                                                        context,
-                                                    Object exception,
-                                                    StackTrace? stackTrace) {
-                                                  return Image.network(
-                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
-                                                    fit: BoxFit.cover,
-                                                    height: 180,
-                                                  );
-                                                },
+                                              child: SizedBox(
+                                                height: 180,
+                                                child: Image.network(
+                                                  productProvider
+                                                      .productModelList[index]
+                                                      .images![0]
+                                                      .toString(),
+                                                  fit: BoxFit.contain,
+                                                  errorBuilder: (BuildContext
+                                                          context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
+                                                    return Image.network(
+                                                      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png",
+                                                      width: 300,
+                                                      height: 150,
+                                                      fit: BoxFit.contain,
+                                                    );
+                                                  },
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(height: 12.0),

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shop_snap/provider/product_provider.dart';
 import 'package:shop_snap/screens/home_screen.dart';
 
+late Size mq;
+
 void main() {
   runApp(const MyApp());
 }
